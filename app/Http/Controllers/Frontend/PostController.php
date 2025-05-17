@@ -4,37 +4,31 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-// use Illuminate\Http\Request; // Unused import
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): Response
     {
-        $posts = Post::with('user') // Eager load user for author name
+        $posts = Post::with('user')
                        ->where('status', 'published')
                        ->orderByDesc('id')
-                       ->paginate(10); // Or your desired number per page
+                       ->paginate(10);
 
         return Inertia::render('Posts/Index', [
             'posts' => $posts,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post): Response // Route model binding will use slug
+
+    public function show(Post $post): Response
     {
         if ($post->status !== 'published') {
             abort(404);
         }
 
-        $post->load('user'); // Eager load author details
+        $post->load('user');
 
         return Inertia::render('Posts/Show', [
             'post' => $post,

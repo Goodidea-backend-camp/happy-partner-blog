@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import BlogLayout from '@/Layouts/BlogLayout.vue';
-// import * as marked from 'marked'; // Unused in this component
 import { computed } from 'vue';
-// import { defineProps } from 'vue'; // defineProps is a compiler macro
-
-// Assuming shadcn/vue components are available or will be added
-// For example, using placeholder divs if Card is not yet added via CLI
-// import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-// import { Button } from '@/components/ui/button';
 
 // Define props from controller
 const props = defineProps<{
@@ -36,28 +29,28 @@ const props = defineProps<{
 // Function to truncate content for preview
 function truncate(text: string, length: number, suffix = '...') {
   if (!text) return '';
-  
+
   // For plain text truncation (safer approach)
   if (text.length <= length) {
     return text;
   }
-  
+
   // Find a good breakpoint (word boundary) to truncate at
   let truncatedText = text.substring(0, length);
-  
+
   // If we're in the middle of a word, go back to the last space
   const lastSpace = truncatedText.lastIndexOf(' ');
   if (lastSpace > length * 0.8) { // Only if the space is reasonably far in the text
     truncatedText = truncatedText.substring(0, lastSpace);
   }
-  
+
   return truncatedText + suffix;
 }
 
 // Function to format plain text preview from markdown
 function getPreviewText(markdown: string, length: number = 150): string {
   if (!markdown) return '';
-  
+
   // Remove markdown characters for a plain text preview
   let plainText = markdown
     .replace(/#{1,6}\s+/g, '') // Remove headers
@@ -72,7 +65,7 @@ function getPreviewText(markdown: string, length: number = 150): string {
     .replace(/\n/g, ' ') // Replace newlines with spaces
     .replace(/\s+/g, ' ') // Normalize whitespace
     .trim();
-  
+
   return truncate(plainText, length);
 }
 

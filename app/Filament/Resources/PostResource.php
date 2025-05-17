@@ -3,20 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
-// use App\Filament\Resources\PostResource\RelationManagers; // No relation managers defined
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-// use Filament\Forms\Components\DateTimePicker; // Unused import
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-// use Illuminate\Database\Eloquent\SoftDeletingScope; // Unused import
 use Illuminate\Support\Str;
 
 class PostResource extends Resource
@@ -34,7 +31,6 @@ class PostResource extends Resource
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Set $set, ?string $state) {
-                        // Simple suggestion based on title - users can edit if needed
                         if ($state) {
                             $slug = Str::slug($state);
                             $set('slug', $slug);
@@ -76,7 +72,6 @@ class PostResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                // We can add filters for status or author later if needed
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -91,9 +86,7 @@ class PostResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            // Relation managers can be added here if needed in the future.
-        ];
+        return [];
     }
 
     public static function getPages(): array

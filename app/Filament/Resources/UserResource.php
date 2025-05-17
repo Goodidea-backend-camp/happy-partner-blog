@@ -3,10 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-// use App\Filament\Resources\UserResource\RelationManagers; // No relation managers defined
 use App\Models\User;
 use Filament\Forms;
-// use Filament\Forms\Components\DateTimePicker; // Unused import
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-// use Illuminate\Database\Eloquent\SoftDeletingScope; // Unused import
 use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Support\Facades\Auth;
 
@@ -89,7 +86,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record): bool => 
+                    ->visible(fn (User $record): bool =>
                         Auth::user()->role === 'admin' || Auth::id() === $record->id
                     ),
                 Tables\Actions\DeleteAction::make()
@@ -105,9 +102,7 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            // Relation managers can be added here if needed in the future.
-        ];
+        return [];
     }
 
     public static function getPages(): array
