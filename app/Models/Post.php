@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +35,17 @@ class Post extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
 
     /**
      * The "booted" method of the model.

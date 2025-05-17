@@ -40,7 +40,14 @@ class UserResource extends Resource
                     ->revealable()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn ($state) => filled($state))
-                    ->confirmed()
+                    ->rules(['confirmed'])
+                    ->maxLength(255),
+                TextInput::make('password_confirmation')
+                    ->password()
+                    ->revealable()
+                    ->label('Confirm Password')
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->dehydrated(false)
                     ->maxLength(255),
                 Select::make('role')
                     ->options([

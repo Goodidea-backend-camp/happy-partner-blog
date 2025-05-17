@@ -79,7 +79,8 @@ export default {
   },
   plugins: [
     require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
     // For Tailwind v4, @tailwindcss/forms might not be needed or configured differently
-    // require('@tailwindcss/forms'), 
+    // require('@tailwindcss/forms'),
   ],
-} 
+}

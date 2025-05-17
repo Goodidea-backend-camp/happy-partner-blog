@@ -32,10 +32,9 @@ class PostResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                    ->live(onBlur: true),
                 TextInput::make('slug')
-                    ->required()
+                    // ->required() // Temporarily removed for testing spatie/laravel-sluggable backend generation
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
                     ->readonly(),
