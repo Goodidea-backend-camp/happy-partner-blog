@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request; // Unused import
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         $posts = Post::with('user') // Eager load user for author name
                        ->where('status', 'published')
-                       ->orderByDesc('published_at')
+                       ->orderByDesc('id')
                        ->paginate(10); // Or your desired number per page
 
         return Inertia::render('Posts/Index', [
@@ -40,4 +40,4 @@ class PostController extends Controller
             'post' => $post,
         ]);
     }
-} 
+}

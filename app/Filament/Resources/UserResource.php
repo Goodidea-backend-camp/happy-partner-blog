@@ -3,10 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+// use App\Filament\Resources\UserResource\RelationManagers; // No relation managers defined
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
+// use Filament\Forms\Components\DateTimePicker; // Unused import
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,8 +14,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+// use Illuminate\Database\Eloquent\SoftDeletingScope; // Unused import
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -25,6 +26,8 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $isAdmin = Auth::user()->role === 'admin';
+
         return $form
             ->schema([
                 TextInput::make('name')
@@ -55,7 +58,9 @@ class UserResource extends Resource
                         'admin' => 'Admin',
                     ])
                     ->required()
-                    ->default('author'),
+                    ->default('author')
+                    ->visible($isAdmin)
+                    ->disabled(!$isAdmin),
             ]);
     }
 
@@ -83,12 +88,17 @@ class UserResource extends Resource
                 TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn (User $record): bool => 
+                        Auth::user()->role === 'admin' || Auth::id() === $record->id
+                    ),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (): bool => Auth::user()->role === 'admin'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn (): bool => Auth::user()->role === 'admin'),
                 ]),
             ]);
     }
@@ -96,7 +106,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Relation managers can be added here if needed in the future.
         ];
     }
 
@@ -107,5 +117,21 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->check() && auth()->user()->role !== 'admin') {
+            $query->where('id', auth()->id());
+        }
+
+        return $query;
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'admin';
     }
 }
