@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Frontend\PostController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+// Blog routes
+Route::get('/', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
