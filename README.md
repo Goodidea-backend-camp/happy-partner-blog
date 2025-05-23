@@ -1,19 +1,10 @@
 # Happy Partner Blog
 
-## :hammer_and_wrench: 開發環境建置
+## 開發環境建置
 
 本專案透過 [Laravel Sail](https://laravel.com/docs/sail) 建立容器化開發環境。
 
-### :white_check_mark: 開發環境規格
-
-```
-|--------------|----------|
-| PHP          | 8.4.7    |
-| Laravel      | 12.14.1  |
-| PostgreSQL   | 17.5     |
-|--------------|----------|
-```
-### :package: 安裝與啟動步驟
+### 安裝與啟動步驟
 
 1. 複製環境設定檔
 ```
@@ -45,8 +36,12 @@ docker run --rm \
 ```
 ./vendor/bin/sail artisan migrate
 ```
-7. 執行 Vite 前端開發環境
+7. 執行 seeder 建立 admin 帳號
 ```
-npm install
-npm run dev
+./vendor/bin/sail artisan db:seed
+```
+8. 執行 Vite 前端開發環境
+```
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
 ```
