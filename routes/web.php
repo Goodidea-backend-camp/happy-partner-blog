@@ -8,8 +8,7 @@ Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 /**
- * TODO: 目前暫時不開放前台使用者進入後台，但之後預期會開放，因此使用註解。
- * 後續開放需驗證 Route 有效性。
+ * TODO: 目前不開放前台使用者進入後台，但尚無時間檢查並刪除相關檔案，因此暫時用註解讓使用者無法訪問，後續應考慮將相關檔案刪除
  */
 //Route::get('dashboard', function () {
 //    return Inertia::render('Dashboard');
