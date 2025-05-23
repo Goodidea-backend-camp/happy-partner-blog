@@ -4,6 +4,8 @@
 
 本專案透過 [Laravel Sail](https://laravel.com/docs/sail) 建立容器化開發環境。
 
+若未下載 [Docker Desktop](https://docs.docker.com/desktop/) 或是 [OrbStack](https://orbstack.dev/)者，需先下載。
+
 ### 安裝與啟動步驟
 
 1. 複製環境設定檔
