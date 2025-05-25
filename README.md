@@ -13,10 +13,11 @@
 cp .env.example .env
 ```
 2. 進入 .env 設定 PostgreSQL 的帳號密碼
-3. 安裝 composer 套件，若本機未安裝 composer，請執行第二段程式碼
+3. 安裝 composer 套件
 ```
 composer install
 ```
+若本機未安裝 composer，請執行第二段程式碼
 ```
 docker run --rm \
     -u "$(id -u):$(id -g)" \
@@ -25,24 +26,23 @@ docker run --rm \
     laravelsail/php84-composer:latest \
     composer install --ignore-platform-reqs
 ```
+
 4. 啟動容器
 ```
 ./vendor/bin/sail up -d
-
 ```
+
 5. 產生應用金鑰
 ```
 ./vendor/bin/sail artisan key:generate
 ```
-6. 執行資料表 migration
+
+6. 執行資料表 migration 並執行 seeder
 ```
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate --seed
 ```
-7. 執行 seeder 建立 admin 帳號
-```
-./vendor/bin/sail artisan db:seed
-```
-8. 執行 Vite 前端開發環境
+
+7. 執行 Vite 前端開發環境
 ```
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
