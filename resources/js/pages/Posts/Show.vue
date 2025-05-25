@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import BlogLayout from '@/Layouts/BlogLayout.vue';
+import BlogLayout from '@/layouts/BlogLayout.vue';
 import { computed } from 'vue';
 import * as marked from 'marked';
 
@@ -23,11 +23,11 @@ const renderedContent = computed(() => {
   if (props.post && props.post.content) {
     try {
       // Initialize marked with options
-      marked.setOptions({ 
-        gfm: true, 
-        breaks: true 
+      marked.setOptions({
+        gfm: true,
+        breaks: true
       });
-      
+
       // Parse markdown to HTML
       return marked.parse(props.post.content);
     } catch (error) {
@@ -59,9 +59,9 @@ function formatDate(dateString: string) {
             <span>Last Edited at {{ formatDate(post.updated_at) }}</span>
           </div>
         </header>
-        
+
         <!-- <pre v-if="false" class="text-xs overflow-auto mb-4 p-2 bg-gray-100 dark:bg-gray-900 rounded">{{ post.content }}</pre> -->
-        
+
         <div class="prose dark:prose-invert lg:prose-xl max-w-none" v-html="renderedContent">
           <!-- Rendered Markdown content -->
         </div>

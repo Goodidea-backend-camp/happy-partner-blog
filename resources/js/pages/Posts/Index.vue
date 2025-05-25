@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import BlogLayout from '@/Layouts/BlogLayout.vue';
+import BlogLayout from '@/layouts/BlogLayout.vue';
 import { computed } from 'vue';
 
 // Define props from controller
