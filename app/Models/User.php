@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
@@ -54,5 +56,16 @@ class User extends Authenticatable
     public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * @param Panel $panel
+     * @return bool
+     * @see https://filamentphp.com/docs/3.x/panels/users#authorizing-access-to-the-panel
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // 目前沒有需要驗證 Email，所以直接 return true
+        return true;
     }
 }
