@@ -12,8 +12,26 @@
 ```
 cp .env.example .env
 ```
+
 2. 進入 .env 設定 PostgreSQL 的帳號密碼
-3. 安裝 composer 套件
+
+```dotenv
+DB_DATABASE=happy_partner_blog
+DB_USERNAME=laravel
+# 務必設定密碼
+DB_PASSWORD=password
+```
+
+3. 如果是 Linux User，需先執行：
+```bash
+# 建立 docker 群組（大多數發行版安裝時已自動建立）
+sudo groupadd docker 2>/dev/null || true
+
+# 讓 <你的 User> 也屬於 docker 群組
+sudo usermod -aG docker <你的 User>
+```
+
+4. 安裝 composer 套件
 ```
 composer install
 ```
@@ -42,8 +60,21 @@ docker run --rm \
 ./vendor/bin/sail artisan migrate --seed
 ```
 
-7. 執行 Vite 前端開發環境
+7. File Storage
+```bash
+./vendor/bin/sail artisan storage:link
+```
+
+8. 執行 Vite 前端開發環境
 ```
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
+```
+
+### Login credentials for testing
+
+Admin(`/admin`)
+```
+email => test@example.com
+password => password'
 ```
