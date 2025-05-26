@@ -4,7 +4,7 @@
 
 ### Prerequisite
 
-1. 需先下載 [Docker Desktop](https://docs.docker.com/desktop/) 或是 [OrbStack](https://orbstack.dev/)者
+1. 需先下載 [Docker Desktop](https://docs.docker.com/desktop/) 或 [OrbStack](https://orbstack.dev/)
 2. 需先確認本地 80 port 沒有被佔走
 
 ### 安裝與啟動步驟
