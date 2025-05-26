@@ -2,9 +2,10 @@
 
 ## 開發環境建置
 
-本專案透過 [Laravel Sail](https://laravel.com/docs/sail) 建立容器化開發環境。
+### Prerequisite
 
-若未下載 [Docker Desktop](https://docs.docker.com/desktop/) 或是 [OrbStack](https://orbstack.dev/)者，需先下載。
+1. 需先下載 [Docker Desktop](https://docs.docker.com/desktop/) 或是 [OrbStack](https://orbstack.dev/)者
+2. 需先確認本地 80 port 沒有被佔走
 
 ### 安裝與啟動步驟
 
@@ -70,6 +71,8 @@ docker run --rm \
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
 ```
+
+9. 進入 http://localhost 確認已成功建置開發環境
 
 ### Login credentials for testing
 
