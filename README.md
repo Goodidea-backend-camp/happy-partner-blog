@@ -79,5 +79,5 @@ docker run --rm \
 Admin(`/admin`)
 ```
 email => test@example.com
-password => password'
+password => password
 ```
