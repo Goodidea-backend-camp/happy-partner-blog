@@ -23,7 +23,7 @@ DB_USERNAME=laravel
 DB_PASSWORD=password
 ```
 
-3. 如果是 Linux User，需先執行：
+3. 如果是 Linux User，需先執行（Mac 使用者可忽略）
 ```bash
 # 建立 docker 群組（大多數發行版安裝時已自動建立）
 sudo groupadd docker 2>/dev/null || true
@@ -46,33 +46,33 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-4. 啟動容器
+5. 啟動容器
 ```
 ./vendor/bin/sail up -d
 ```
 
-5. 產生應用金鑰
+6. 產生應用金鑰
 ```
 ./vendor/bin/sail artisan key:generate
 ```
 
-6. 執行資料表 migration 並執行 seeder
+7. 執行資料表 migration 並執行 seeder
 ```
 ./vendor/bin/sail artisan migrate --seed
 ```
 
-7. File Storage
+8. File Storage
 ```bash
 ./vendor/bin/sail artisan storage:link
 ```
 
-8. 執行 Vite 前端開發環境
+9. 執行 Vite 前端開發環境
 ```
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
 ```
 
-9. 進入 http://localhost 確認已成功建置開發環境
+10. 進入 http://localhost 確認已成功建置開發環境
 
 ### Login credentials for testing
 
