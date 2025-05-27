@@ -50,4 +50,4 @@
          run: npm run build
 
        - name: Tests
-         run: ./vendor/bin/phpunit
+         run: ./vendor/bin/pest
