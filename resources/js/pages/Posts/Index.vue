@@ -52,7 +52,7 @@ function getPreviewText(markdown: string, length: number = 150): string {
   if (!markdown) return '';
 
   // Remove markdown characters for a plain text preview
-  let plainText = markdown
+  const plainText = markdown
     .replace(/#{1,6}\s+/g, '') // Remove headers
     .replace(/(\*\*|__)(.*?)\1/g, '$2') // Remove bold
     .replace(/(\*|_)(.*?)\1/g, '$2') // Remove italic
@@ -126,16 +126,14 @@ function formatDate(dateString: string) {
                 v-if="posts.links[0].url"
                 :href="posts.links[0].url || '#'"
                 class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                v-html="posts.links[0].label"
                 preserve-scroll
-            />
+            ><div v-html="posts.links[0].label"></div></Link>
             <Link
                 v-if="posts.links[posts.links.length - 1].url"
                 :href="posts.links[posts.links.length - 1].url || '#'"
                 class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                v-html="posts.links[posts.links.length - 1].label"
                 preserve-scroll
-            />
+            ><div v-html="posts.links[posts.links.length - 1].label"></div></Link>
         </div>
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
           <div>
@@ -143,7 +141,6 @@ function formatDate(dateString: string) {
               <template v-for="(link, key) in posts.links" :key="key">
                 <Link
                   :href="link.url || '#'"
-                  v-html="link.label"
                   class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                   :class="{
                     'z-10 bg-indigo-50 border-indigo-500 text-indigo-600 dark:bg-indigo-900 dark:border-indigo-700 dark:text-indigo-300': link.active,
@@ -152,7 +149,7 @@ function formatDate(dateString: string) {
                   }"
                   :disabled="!link.url"
                   preserve-scroll
-                />
+                ><div v-html="link.label"></div></Link>
               </template>
             </span>
           </div>

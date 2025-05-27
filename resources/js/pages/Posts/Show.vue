@@ -63,7 +63,6 @@ function formatDate(dateString: string) {
         <!-- <pre v-if="false" class="text-xs overflow-auto mb-4 p-2 bg-gray-100 dark:bg-gray-900 rounded">{{ post.content }}</pre> -->
 
         <div class="prose dark:prose-invert lg:prose-xl max-w-none" v-html="renderedContent">
-          <!-- Rendered Markdown content -->
         </div>
 
         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -151,7 +150,7 @@ function formatDate(dateString: string) {
   margin: 1em 0;
   white-space: pre-wrap;       /* Since CSS 2.1 */
   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
