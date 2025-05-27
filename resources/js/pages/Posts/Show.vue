@@ -63,7 +63,6 @@ function formatDate(dateString: string) {
         <!-- <pre v-if="false" class="text-xs overflow-auto mb-4 p-2 bg-gray-100 dark:bg-gray-900 rounded">{{ post.content }}</pre> -->
 
         <div class="prose dark:prose-invert lg:prose-xl max-w-none" v-html="renderedContent">
-          <!-- Rendered Markdown content -->
         </div>
 
         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
