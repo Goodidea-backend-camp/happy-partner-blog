@@ -1,4 +1,7 @@
 <template>
+  <Head>
+    <meta property="og:site_name" content="快樂小夥伴的部落格" />
+  </Head>
   <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
     <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
       <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
@@ -28,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 </script>
 
 <style scoped>
