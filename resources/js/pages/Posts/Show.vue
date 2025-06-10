@@ -18,6 +18,16 @@ const props = defineProps<{
   };
 }>();
 
+const plainTextContent = computed(() => {
+  if (!props.post || !props.post.content) {
+    return '';
+  }
+  // Remove Markdown and HTML tags, then collapse whitespace
+  const stripped = props.post.content.replace(/<[^>]+>|`|#|\*|_|---|\[|\]|\(|\)/g, '').replace(/\s+/g, ' ').trim();
+  // Truncate to 155 characters
+  return stripped.length > 155 ? stripped.substring(0, 155) + '...' : stripped;
+});
+
 // Compute the HTML from markdown content
 const renderedContent = computed(() => {
   if (props.post && props.post.content) {
@@ -45,10 +55,19 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+const postUrl = computed(() => route('posts.show', props.post.slug));
+
 </script>
 
 <template>
-  <Head :title="post.title" />
+  <Head>
+    <title>{{ post.title }}</title>
+    <meta name="description" :content="plainTextContent" head-key="description">
+    <meta property="og:title" :content="post.title" />
+    <meta property="og:description" :content="plainTextContent" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" :content="postUrl" />
+  </Head>
   <BlogLayout>
     <article class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
       <div class="p-6 md:p-8">

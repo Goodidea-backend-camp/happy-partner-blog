@@ -26,6 +26,10 @@ const props = defineProps<{
   };
 }>();
 
+const blogTitle = '快樂小夥伴的部落格';
+const blogDescription = '歡迎來到快樂小夥伴的部落格，這裡會分享各種技術文章與心得。';
+const blogUrl = computed(() => route('posts.index'));
+
 // Function to truncate content for preview
 function truncate(text: string, length: number, suffix = '...') {
   if (!text) return '';
@@ -86,7 +90,14 @@ function formatDate(dateString: string) {
 </script>
 
 <template>
-  <Head title="All Posts" />
+  <Head>
+    <title>{{ blogTitle }}</title>
+    <meta name="description" :content="blogDescription" head-key="description">
+    <meta property="og:title" :content="blogTitle" />
+    <meta property="og:description" :content="blogDescription" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" :content="blogUrl" />
+  </Head>
   <BlogLayout>
     <div class="space-y-8">
       <div v-if="posts.data.length === 0" class="text-center text-gray-500 dark:text-gray-400">
