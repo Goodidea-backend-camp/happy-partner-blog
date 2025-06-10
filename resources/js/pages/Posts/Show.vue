@@ -25,7 +25,7 @@ const plainTextContent = computed(() => {
     // 1. 先將 Markdown 轉為 HTML
     const html = marked(props.post.content);
     // 2. 再從 HTML 中移除所有標籤，並整理空白字元
-    const stripped = html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const stripped = html.replace(/<[^>]+>/g, '').replace(/&\w+;/g, ' ').replace(/\s+/g, ' ').trim();
     // 3. 截斷到 155 個字元
     const maxLength = 155;
     if (stripped.length <= maxLength) {
@@ -71,7 +71,7 @@ const postUrl = computed(() => route('posts.show', props.post.slug));
     <meta name="description" :content="plainTextContent" head-key="description">
     <meta property="og:title" :content="post.title" />
     <meta property="og:description" :content="plainTextContent" />
-    <meta property="og:type" :content="article" />
+    <meta property="og:type" content="article" />
     <meta property="og:url" :content="postUrl" />
   </Head>
   <BlogLayout>
