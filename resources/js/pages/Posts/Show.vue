@@ -68,11 +68,10 @@ const postUrl = computed(() => route('posts.show', props.post.slug));
 <template>
   <Head>
     <title>{{ post.title }}</title>
-    <meta name="description" :content="plainTextContent" head-key="description">
-    <meta property="og:title" :content="post.title" />
-    <meta property="og:description" :content="plainTextContent" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" :content="postUrl" />
+    <meta property="og:title" :content="post.title" head-key="og:title" />
+    <meta property="og:description" :content="plainTextContent" head-key="og:description" />
+    <meta property="og:type" content="article" head-key="og:type" />
+    <meta property="og:url" :content="postUrl" head-key="og:url" />
   </Head>
   <BlogLayout>
     <article class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
