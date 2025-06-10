@@ -92,11 +92,10 @@ function formatDate(dateString: string) {
 <template>
   <Head>
     <title>{{ blogTitle }}</title>
-    <meta name="description" :content="blogDescription" head-key="description">
-    <meta property="og:title" :content="blogTitle" />
-    <meta property="og:description" :content="blogDescription" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" :content="blogUrl" />
+      <meta property="og:title" :content="blogTitle" />
+      <meta property="og:description" :content="blogDescription" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" :content="blogUrl" />
   </Head>
   <BlogLayout>
     <div class="space-y-8">

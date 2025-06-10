@@ -1,6 +1,6 @@
 <template>
   <Head>
-    <meta property="og:site_name" content="快樂小夥伴的部落格" />
+    <meta property="og:site_name" content="快樂小夥伴的部落格" head-key="og:site_name" />
   </Head>
   <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
     <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
