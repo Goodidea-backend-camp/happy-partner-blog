@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import AppHead from '@/components/AppHead.vue';
+import { Head, Link } from '@inertiajs/vue3';
 import BlogLayout from '@/layouts/BlogLayout.vue';
 import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
 
 // Define props from controller
 const props = defineProps<{
@@ -16,16 +15,17 @@ const props = defineProps<{
       user: {
         name: string;
       };
+      // Add other fields from your Post model as needed
     }>;
     links: Array<{
       url: string | null;
       label: string;
       active: boolean;
     }>;
+    // other pagination properties like current_page, last_page, etc., if needed directly
   };
 }>();
 
-const blogDescription = '歡迎來到快樂小夥伴的部落格，這裡會分享各種技術文章與心得。';
 const blogUrl = computed(() => route('posts.index'));
 
 // Function to truncate content for preview
@@ -88,15 +88,9 @@ function formatDate(dateString: string) {
 </script>
 
 <template>
-  <AppHead>
-    <meta name="description" :content="blogDescription" head-key="description" />
-    <meta property="og:description" :content="blogDescription" head-key="og:description" />
-    <meta property="og:type" content="website" head-key="og:type" />
+  <Head>
     <meta property="og:url" :content="blogUrl" head-key="og:url" />
-    <meta property="og:site_name" content="快樂小夥伴的部落格" head-key="og:site_name" />
-    <meta property="og:locale" content="zh_TW" head-key="og:locale" />
-    <!-- You might want a default image, e.g. <meta property="og:image" content="https://jyu1999.com/og-image.png" head-key="og:image" /> -->
-  </AppHead>
+  </Head>
   <BlogLayout>
     <div class="space-y-8">
       <div v-if="posts.data.length === 0" class="text-center text-gray-500 dark:text-gray-400">
