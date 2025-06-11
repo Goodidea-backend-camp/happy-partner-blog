@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <Head :title="title ? `${title} - 快樂小夥伴的部落格` : '快樂小夥伴的部落格'">
+  <Head :title="title">
     <slot />
   </Head>
 </template> 
