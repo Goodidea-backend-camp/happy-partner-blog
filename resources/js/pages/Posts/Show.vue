@@ -18,8 +18,6 @@ const props = defineProps<{
   };
 }>();
 
-const pageTitle = computed(() => `${props.post.title} - 快樂小夥伴的部落格`);
-
 const plainTextContent = computed(() => {
     if (!props.post || !props.post.content) {
         return '';
@@ -68,8 +66,8 @@ const postUrl = computed(() => route('posts.show', props.post.slug));
 </script>
 
 <template>
-  <Head :title="pageTitle">
-    <meta name="description" :content="plainTextContent" head-key="description" />
+  <Head>
+    <title>{{ post.title }}</title>
     <meta property="og:title" :content="post.title" head-key="og:title" />
     <meta property="og:description" :content="plainTextContent" head-key="og:description" />
     <meta property="og:type" content="article" head-key="og:type" />
