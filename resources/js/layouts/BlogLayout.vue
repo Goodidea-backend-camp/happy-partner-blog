@@ -9,8 +9,6 @@
           <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
             <Link :href="route('posts.index')">快樂小夥伴的部落格</Link>
           </h1>
-          <!-- Future navigation links can go here -->
-          <!-- e.g., About, Contact, Login/Register if needed -->
         </div>
       </div>
     </header>
