@@ -1,8 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
-    <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
-      <Navbar />
-    </header>
+    <Navbar />
 
     <main class="flex-grow py-8">
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
