@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import BlogLayout from '@/layouts/BlogLayout.vue';
-import { computed } from 'vue';
+import ArticleIndexPage from '@/components/ui/article/ArticleIndexPage.vue';
 
 // Define props from controller
 const props = defineProps<{
@@ -25,64 +25,6 @@ const props = defineProps<{
     // other pagination properties like current_page, last_page, etc., if needed directly
   };
 }>();
-
-// Function to truncate content for preview
-function truncate(text: string, length: number, suffix = '...') {
-  if (!text) return '';
-
-  // For plain text truncation (safer approach)
-  if (text.length <= length) {
-    return text;
-  }
-
-  // Find a good breakpoint (word boundary) to truncate at
-  let truncatedText = text.substring(0, length);
-
-  // If we're in the middle of a word, go back to the last space
-  const lastSpace = truncatedText.lastIndexOf(' ');
-  if (lastSpace > length * 0.8) { // Only if the space is reasonably far in the text
-    truncatedText = truncatedText.substring(0, lastSpace);
-  }
-
-  return truncatedText + suffix;
-}
-
-// Function to format plain text preview from markdown
-function getPreviewText(markdown: string, length: number = 150): string {
-  if (!markdown) return '';
-
-  // Remove markdown characters for a plain text preview
-  const plainText = markdown
-    .replace(/#{1,6}\s+/g, '') // Remove headers
-    .replace(/(\*\*|__)(.*?)\1/g, '$2') // Remove bold
-    .replace(/(\*|_)(.*?)\1/g, '$2') // Remove italic
-    .replace(/~~(.*?)~~/g, '$1') // Remove strikethrough
-    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links but keep link text
-    .replace(/!\[(.*?)\]\(.*?\)/g, '$1') // Remove images but keep alt text
-    .replace(/```[\s\S]*?```/g, '') // Remove code blocks
-    .replace(/`([^`]*)`/g, '$1') // Remove inline code
-    .replace(/(- |\d+\. )/g, '') // Remove list markers
-    .replace(/\n/g, ' ') // Replace newlines with spaces
-    .replace(/\s+/g, ' ') // Normalize whitespace
-    .trim();
-
-  return truncate(plainText, length);
-}
-
-// Pre-compute the previews to avoid reactivity issues
-const postPreviews = computed(() => {
-  return props.posts.data.map(post => ({
-    ...post,
-    previewText: getPreviewText(post.content)
-  }));
-});
-
-// Function to format date (basic example)
-function formatDate(dateString: string) {
-  if (!dateString) return 'N/A';
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-}
 </script>
 
 <template>
@@ -93,29 +35,7 @@ function formatDate(dateString: string) {
         <p class="text-xl">No posts found.</p>
       </div>
 
-      <article v-for="post in postPreviews" :key="post.id"
-               class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out">
-        <div class="p-6">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            <Link :href="route('posts.show', post.slug)" class="hover:underline">
-              {{ post.title }}
-            </Link>
-          </h2>
-          <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            <span>By {{ post.user.name }}</span> &middot;
-            <span>Last Edited at {{ formatDate(post.updated_at) }}</span>
-          </div>
-          <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 mb-4 break-words">
-            {{ post.previewText }}
-          </div>
-          <div class="mt-4">
-            <Link :href="route('posts.show', post.slug)"
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600">
-              Read more &rarr;
-            </Link>
-          </div>
-        </div>
-      </article>
+      <ArticleIndexPage v-else :posts="posts" />
     </div>
 
     <!-- Pagination -->
