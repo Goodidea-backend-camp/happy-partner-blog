@@ -1,4 +1,7 @@
 <template>
+  <Head>
+    <meta property="og:site_name" content="快樂小夥伴的部落格" head-key="og:site_name" />
+  </Head>
   <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
     <Navbar />
 
@@ -18,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
 import Navbar from '@/components/ui/navbar/Navbar.vue';
 </script>
 

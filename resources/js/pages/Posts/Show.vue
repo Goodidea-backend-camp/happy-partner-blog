@@ -2,7 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import BlogLayout from '@/layouts/BlogLayout.vue';
 import { computed } from 'vue';
-import * as marked from 'marked';
+import { marked } from 'marked';
 
 // defineProps is a compiler macro and does not need to be imported
 const props = defineProps<{
@@ -17,6 +17,22 @@ const props = defineProps<{
     };
   };
 }>();
+
+const plainTextContent = computed(() => {
+    if (!props.post || !props.post.content) {
+        return '';
+    }
+    // 1. 先將 Markdown 轉為 HTML
+    const html = marked(props.post.content);
+    // 2. 再從 HTML 中移除所有標籤，並整理空白字元
+    const stripped = html.replace(/<[^>]+>/g, '').replace(/&\w+;/g, ' ').replace(/\s+/g, ' ').trim();
+    // 3. 截斷到 155 個字元
+    const maxLength = 155;
+    if (stripped.length <= maxLength) {
+        return stripped;
+    }
+    return stripped.substring(0, maxLength - 3) + '...';
+});
 
 // Compute the HTML from markdown content
 const renderedContent = computed(() => {
@@ -45,10 +61,18 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+const postUrl = computed(() => route('posts.show', props.post.slug));
+
 </script>
 
 <template>
-  <Head :title="post.title" />
+  <Head>
+    <title>{{ post.title }}</title>
+    <meta property="og:title" :content="post.title" head-key="og:title" />
+    <meta property="og:description" :content="plainTextContent" head-key="og:description" />
+    <meta property="og:type" content="article" head-key="og:type" />
+    <meta property="og:url" :content="postUrl" head-key="og:url" />
+  </Head>
   <BlogLayout>
     <article class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
       <div class="p-6 md:p-8">

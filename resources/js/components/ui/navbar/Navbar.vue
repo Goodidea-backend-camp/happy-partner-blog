@@ -10,7 +10,7 @@
     </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Menubar from 'primevue/menubar';
 import { ref } from "vue";
 
