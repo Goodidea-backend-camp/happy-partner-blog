@@ -2,9 +2,9 @@
     <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                <nav class="text-2xl font-semibold text-gray-900 dark:text-white">
                     <Menubar :model="items" />
-                </h1>
+                </nav>
             </div>
         </div>
     </header>
@@ -21,3 +21,4 @@ const items = ref([
     }
 ]);
 </script>
+
