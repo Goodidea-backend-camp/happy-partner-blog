@@ -97,7 +97,7 @@ function formatDate(dateString: string) {
       <meta property="og:type" content="website" />
       <meta property="og:url" :content="blogUrl" />
   </Head>
-  BlogLayout>
+  <BlogLayout>
     <div class="space-y-8">
       <div v-if="posts.data.length === 0" class="text-center text-gray-500 dark:text-gray-400">
         <p class="text-xl">No posts found.</p>
