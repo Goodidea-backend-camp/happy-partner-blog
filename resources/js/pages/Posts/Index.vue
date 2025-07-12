@@ -97,6 +97,16 @@ function formatDate(dateString: string) {
       <meta property="og:type" content="website" />
       <meta property="og:url" :content="blogUrl" />
   </Head>
+
+  <!-- <Button
+      label="Search"
+      icon="pi pi-search"
+      unstyled
+      pt:root="bg-teal-500 hover:bg-teal-700 active:bg-teal-900 cursor-pointer py-2 px-4 rounded-full border-0 flex gap-2"
+      pt:label="text-white font-bold text-lg"
+      pt:icon="text-white text-xl"
+  /> -->
+
   <BlogLayout>
     <div class="space-y-8">
       <div v-if="posts.data.length === 0" class="text-center text-gray-500 dark:text-gray-400">
