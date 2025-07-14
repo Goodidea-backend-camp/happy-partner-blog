@@ -101,7 +101,7 @@ class PostResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        if (auth()->check() && auth()->user()->role !== 'admin') {
+        if (auth()->check()) {
             $query->where('user_id', auth()->id());
         }
         return $query;
