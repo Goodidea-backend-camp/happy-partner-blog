@@ -11,6 +11,7 @@ export default {
     './resources/js/components/ui/**/*.{vue,js,ts}', // Default for shadcn-vue generated components
     './resources/js/lib/utils.js', // For cn helper often used by shadcn-vue
     './resources/js/Pages/**/*.{vue,js,ts}',
+    "./node_modules/primevue/**/*.{vue,js,ts,jsx,tsx}"
   ],
   theme: {
     container: {
@@ -80,6 +81,7 @@ export default {
   plugins: [
     require('tailwindcss-animate'),
     require('@tailwindcss/typography'),
+    require('tailwindcss-primeui'),
     // For Tailwind v4, @tailwindcss/forms might not be needed or configured differently
     // require('@tailwindcss/forms'),
   ],
