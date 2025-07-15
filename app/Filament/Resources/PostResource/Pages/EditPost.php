@@ -5,6 +5,8 @@ namespace App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class EditPost extends EditRecord
 {
@@ -13,7 +15,8 @@ class EditPost extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+            ->visible(fn (Post $record): bool => Auth::id() === $record->user_id),
         ];
     }
 }

@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PostResource extends Resource
 {
@@ -24,6 +25,8 @@ class PostResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $isOwner = Auth::id() === $form->getRecord()->id;
+
         return $form
             ->schema([
                 TextInput::make('title')
@@ -35,14 +38,17 @@ class PostResource extends Resource
                             $slug = Str::slug($state);
                             $set('slug', $slug);
                         }
-                    }),
+                    })
+                    ->disabled(!$isOwner),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(Post::class, 'slug', ignoreRecord: true),
+                    ->unique(Post::class, 'slug', ignoreRecord: true)
+                    ->disabled(!$isOwner),
                 MarkdownEditor::make('content')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(!$isOwner),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -75,11 +81,13 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (Post $record): bool => Auth::id() === $record->user_id),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn (Post $record): bool => Auth::id() === $record->user_id),
                 ]),
             ]);
     }
@@ -101,7 +109,7 @@ class PostResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->role !== 'admin') {
             $query->where('user_id', auth()->id());
         }
         return $query;

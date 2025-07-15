@@ -24,31 +24,36 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         $isAdmin = Auth::user()->role === 'admin';
+        $isOwner = Auth::id() === $form->getRecord()->id;
 
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(!$isOwner),
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(!$isOwner),
                 TextInput::make('password')
                     ->password()
                     ->revealable()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn ($state) => filled($state))
                     ->rules(['confirmed'])
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(!$isOwner),
                 TextInput::make('password_confirmation')
                     ->password()
                     ->revealable()
                     ->label('Confirm Password')
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(false)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(!$isOwner),
                 Select::make('role')
                     ->options([
                         'author' => 'Author',
@@ -57,7 +62,7 @@ class UserResource extends Resource
                     ->required()
                     ->default('author')
                     ->visible($isAdmin)
-                    ->disabled(!$isAdmin),
+                    ->disabled(!$isAdmin && !$isOwner),
             ]);
     }
 
@@ -90,12 +95,12 @@ class UserResource extends Resource
                         Auth::user()->role === 'admin' || Auth::id() === $record->id
                     ),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (): bool => Auth::user()->role === 'admin'),
+                    ->visible(false),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn (): bool => Auth::user()->role === 'admin'),
+                        ->visible(false),
                 ]),
             ]);
     }
