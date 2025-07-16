@@ -62,7 +62,7 @@ class UserResource extends Resource
                     ->required()
                     ->default('author')
                     ->visible($isAdmin)
-                    ->disabled(!$isAdmin && !$isOwner),
+                    ->disabled(!$isAdmin),
             ]);
     }
 
