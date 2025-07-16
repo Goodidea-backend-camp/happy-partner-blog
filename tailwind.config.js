@@ -81,6 +81,7 @@ export default {
   plugins: [
     require('tailwindcss-animate'),
     require('@tailwindcss/typography'),
+    require('tailwindcss-primeui'),
     // For Tailwind v4, @tailwindcss/forms might not be needed or configured differently
     // require('@tailwindcss/forms'),
   ],
