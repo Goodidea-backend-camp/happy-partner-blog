@@ -62,6 +62,8 @@ class PostResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $isOwner = fn (Post $record): bool => Auth::id() === $record->user_id;
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
@@ -82,12 +84,12 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (Post $record): bool => Auth::id() === $record->user_id),
+                    ->visible($isOwner),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn (Post $record): bool => Auth::id() === $record->user_id),
+                        ->visible($isOwner),
                 ]),
             ]);
     }
