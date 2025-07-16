@@ -94,14 +94,9 @@ class UserResource extends Resource
                     ->visible(fn (User $record): bool =>
                         Auth::user()->role === 'admin' || Auth::id() === $record->id
                     ),
-                Tables\Actions\DeleteAction::make()
-                    ->visible(false),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(false),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 
