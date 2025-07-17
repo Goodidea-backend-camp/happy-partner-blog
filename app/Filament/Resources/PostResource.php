@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
+use App\Helpers\PostPermission;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
@@ -25,8 +26,6 @@ class PostResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isOwner = Auth::id() === $form->getRecord()->id;
-
         return $form
             ->schema([
                 TextInput::make('title')
@@ -39,16 +38,16 @@ class PostResource extends Resource
                             $set('slug', $slug);
                         }
                     })
-                    ->disabled(!$isOwner),
+                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'title')),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                    ->disabled(!$isOwner),
+                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'slug')),
                 MarkdownEditor::make('content')
                     ->required()
                     ->columnSpanFull()
-                    ->disabled(!$isOwner),
+                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'content')),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -62,8 +61,6 @@ class PostResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $isOwner = fn (Post $record): bool => Auth::id() === $record->user_id;
-
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
@@ -84,13 +81,10 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible($isOwner),
+                    ->visible(fn($record): bool  => PostPermission::canViewField(Auth::user(), $record)),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible($isOwner),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 

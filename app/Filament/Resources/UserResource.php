@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use App\Helpers\UserPermission;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -23,21 +24,18 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isAdmin = Auth::user()->role === 'admin';
-        $isOwner = Auth::id() === $form->getRecord()->id;
-
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->disabled(!$isOwner),
+                    ->disabled(!UserPermission::canEditField(Auth::user(), $form->getRecord())),
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
-                    ->disabled(!$isOwner),
+                    ->disabled(!UserPermission::canEditField(Auth::user(), $form->getRecord())),
                 TextInput::make('password')
                     ->password()
                     ->revealable()
@@ -45,7 +43,7 @@ class UserResource extends Resource
                     ->dehydrated(fn ($state) => filled($state))
                     ->rules(['confirmed'])
                     ->maxLength(255)
-                    ->disabled(!$isOwner),
+                    ->disabled(!UserPermission::canEditField(Auth::user(), $form->getRecord())),
                 TextInput::make('password_confirmation')
                     ->password()
                     ->revealable()
@@ -53,7 +51,7 @@ class UserResource extends Resource
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(false)
                     ->maxLength(255)
-                    ->disabled(!$isOwner),
+                    ->disabled(!UserPermission::canEditField(Auth::user(), $form->getRecord())),
                 Select::make('role')
                     ->options([
                         'author' => 'Author',
@@ -61,8 +59,8 @@ class UserResource extends Resource
                     ])
                     ->required()
                     ->default('author')
-                    ->visible($isAdmin)
-                    ->disabled(!$isAdmin),
+                    ->visible(UserPermission::canViewField(Auth::user()))
+                    ->disabled(!UserPermission::canViewField(Auth::user())),
             ]);
     }
 
