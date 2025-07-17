@@ -10,6 +10,8 @@ class PostPermission
     {
         if ($record && $record->user_id === $user->id) {
             return true;
+        }elseif($record === null){
+            return true;
         }elseif ($user->role === 'admin') {
             return $field === 'status';
         }

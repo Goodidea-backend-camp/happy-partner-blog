@@ -10,6 +10,8 @@ class UserPermission
     {
         if ($record && $record->id === $user->id) {
             return true;
+        }elseif($record === null && $user->role === 'admin'){
+            return true;
         }
 
         return false;
