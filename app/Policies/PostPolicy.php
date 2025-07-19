@@ -7,24 +7,6 @@ use App\Models\User;
 
 class PostPolicy
 {
-    // 判斷是否允許登入使用者瀏覽所有文章列表
-    public function viewAny(User $user): bool
-    {
-        return $user !== null;
-    }
-
-    // 判斷是否允許登入使用者瀏覽特定文章
-    public function view(User $user, User $model): bool
-    {
-        return $user !== null;
-    }
-
-    // 判斷是否允許登入使用者新增文章
-    public function create(User $user): bool
-    {
-        return $user !== null;
-    }
-
     // 判斷是否允許登入使用者更新特定文章
     public function update(User $user, Post $post): bool
     {

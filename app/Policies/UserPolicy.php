@@ -7,24 +7,6 @@ use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
-    // 判斷使用者是否可以瀏覽所有使用者列表。
-    public function viewAny(User $user): bool
-    {
-        return $user !== null;
-    }
-
-    // 判斷使用者是否可以瀏覽特定使用者。
-    public function view(User $user, User $targetUser): bool
-    {
-        return $user !== null;
-    }
-
-    // 判斷使用者是否可以新增使用者。
-    public function create(User $user): bool
-    {
-        return $user !== null;
-    }
-
     // 判斷使用者是否可以更新特定使用者。
     public function update(User $user, User $targetUser): bool
     {
@@ -53,7 +35,7 @@ class UserPolicy
     public function editName(User $user, User $targetUser): bool
     {
         if($targetUser->id === null){
-            return $user !== null;
+            return $user->role === 'admin';
         }
         return $user->id === $targetUser->id;
     }
@@ -62,7 +44,7 @@ class UserPolicy
     public function editEmail(User $user, User $targetUser): bool
     {
         if($targetUser->id === null){
-            return $user !== null;
+            return $user->role === 'admin';
         }
         return $user->id === $targetUser->id;
     }
@@ -71,7 +53,7 @@ class UserPolicy
     public function editPassword(User $user, User $targetUser): bool
     {
         if($targetUser->id === null){
-            return $user !== null;
+            return $user->role === 'admin';
         }
         return $user->id === $targetUser->id;
     }
