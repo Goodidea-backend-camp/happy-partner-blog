@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
-use App\Helpers\PostPermission;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use App\Models\Post;
@@ -17,7 +16,7 @@ class EditPost extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-            ->visible(fn($record): bool => PostPermission::canViewField(Auth::user(), $record)),
+            ->visible(fn(?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
         ];
     }
 }

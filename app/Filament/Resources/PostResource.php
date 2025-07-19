@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
-use App\Helpers\PostPermission;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
@@ -38,16 +37,16 @@ class PostResource extends Resource
                             $set('slug', $slug);
                         }
                     })
-                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'title')),
+                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editTitle', $record)),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'slug')),
+                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editSlug', $record)),
                 MarkdownEditor::make('content')
                     ->required()
                     ->columnSpanFull()
-                    ->disabled(!PostPermission::canEditField(Auth::user(),$form->getRecord(), 'content')),
+                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editContent', $record)),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -81,7 +80,7 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn($record): bool  => PostPermission::canViewField(Auth::user(), $record)),
+                    ->visible(fn(?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
