@@ -22,32 +22,34 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isAdmin = Auth::user()->role === 'admin';
-
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn (?User $currentUser): bool => $currentUser && Auth::user()->cannot('editName', $currentUser)),
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn (?User $currentUser): bool => $currentUser && Auth::user()->cannot('editEmail', $currentUser)),
                 TextInput::make('password')
                     ->password()
                     ->revealable()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn ($state) => filled($state))
                     ->rules(['confirmed'])
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn (?User $currentUser): bool => $currentUser && Auth::user()->cannot('editPassword', $currentUser)),
                 TextInput::make('password_confirmation')
                     ->password()
                     ->revealable()
                     ->label('Confirm Password')
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(false)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(fn (?User $currentUser): bool => $currentUser && Auth::user()->cannot('editPasswordConfirmation', $currentUser)),
                 Select::make('role')
                     ->options([
                         'author' => 'Author',
@@ -55,8 +57,8 @@ class UserResource extends Resource
                     ])
                     ->required()
                     ->default('author')
-                    ->visible($isAdmin)
-                    ->disabled(! $isAdmin),
+                    ->visible(fn (?User $currentUser): bool => $currentUser && Auth::user()->can('viewRole', $currentUser))
+                    ->disabled(fn (?User $currentUser): bool => $currentUser && Auth::user()->cannot('editRole', $currentUser)),
             ]);
     }
 
@@ -85,16 +87,10 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record): bool => Auth::user()->role === 'admin' || Auth::id() === $record->id
-                    ),
-                Tables\Actions\DeleteAction::make()
-                    ->visible(fn (): bool => Auth::user()->role === 'admin'),
+                    ->visible(fn (?User $currentUser): bool => $currentUser && Auth::user()->can('viewEditButton', $currentUser)),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn (): bool => Auth::user()->role === 'admin'),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 

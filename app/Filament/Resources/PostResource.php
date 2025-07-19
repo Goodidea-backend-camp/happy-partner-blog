@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PostResource extends Resource
@@ -34,14 +35,17 @@ class PostResource extends Resource
                             $slug = Str::slug($state);
                             $set('slug', $slug);
                         }
-                    }),
+                    })
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editTitle', $record)),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(Post::class, 'slug', ignoreRecord: true),
+                    ->unique(Post::class, 'slug', ignoreRecord: true)
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editSlug', $record)),
                 MarkdownEditor::make('content')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editContent', $record)),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -74,12 +78,11 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 
