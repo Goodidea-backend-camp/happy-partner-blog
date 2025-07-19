@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
-use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -107,6 +106,7 @@ class PostResource extends Resource
         if (auth()->check() && auth()->user()->role !== 'admin') {
             $query->where('user_id', auth()->id());
         }
+
         return $query;
     }
 }

@@ -4,15 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
@@ -59,7 +58,6 @@ class UserResource extends Resource
                     ->required()
                     ->default('author')
                     ->visible(fn(?User $currentUser): bool => $currentUser && Auth::user()->can('viewRole', $currentUser))
-                    ->disabled(fn(?User $currentUser): bool => $currentUser && Auth::user()->cannot('editRole', $currentUser)),
             ]);
     }
 
