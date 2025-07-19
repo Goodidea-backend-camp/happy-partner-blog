@@ -12,15 +12,14 @@ class PostController extends Controller
     public function index(): Response
     {
         $posts = Post::with('user')
-                       ->where('status', 'published')
-                       ->orderByDesc('id')
-                       ->paginate(10);
+            ->where('status', 'published')
+            ->orderByDesc('id')
+            ->paginate(10);
 
         return Inertia::render('Posts/Index', [
             'posts' => $posts,
         ]);
     }
-
 
     public function show(Post $post): Response
     {

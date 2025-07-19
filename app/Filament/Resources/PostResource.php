@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
-use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,8 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostResource extends Resource
 {
@@ -37,16 +36,16 @@ class PostResource extends Resource
                             $set('slug', $slug);
                         }
                     })
-                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editTitle', $record)),
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editTitle', $record)),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editSlug', $record)),
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editSlug', $record)),
                 MarkdownEditor::make('content')
                     ->required()
                     ->columnSpanFull()
-                    ->disabled(fn(?Post $record): bool => $record && Auth::user()->cannot('editContent', $record)),
+                    ->disabled(fn (?Post $record): bool => $record && Auth::user()->cannot('editContent', $record)),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -80,7 +79,7 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn(?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
+                    ->visible(fn (?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
@@ -107,6 +106,7 @@ class PostResource extends Resource
         if (auth()->check() && auth()->user()->role !== 'admin') {
             $query->where('user_id', auth()->id());
         }
+
         return $query;
     }
 }

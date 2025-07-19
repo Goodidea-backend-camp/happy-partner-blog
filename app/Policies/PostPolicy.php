@@ -16,11 +16,11 @@ class PostPolicy
     // 判斷是否允許登入使用者刪除特定文章
     public function delete(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id ;
+        return $user->id === $post->user_id;
     }
 
     // 判斷是否允許登入使用者還原特定文章
-    public function restore(User $user,  Post $post): bool
+    public function restore(User $user, Post $post): bool
     {
         return $user->role === 'admin';
     }
@@ -58,6 +58,6 @@ class PostPolicy
     // 判斷是否顯示刪除按鈕
     public function viewDeleteButton(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id || $user->role === 'admin';   
+        return $user->id === $post->user_id || $user->role === 'admin';
     }
 }
