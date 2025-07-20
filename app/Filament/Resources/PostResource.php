@@ -49,7 +49,7 @@ class PostResource extends Resource
                         PostStatus::Published->value => 'Published',
                     ])
                     ->required()
-                    ->default('draft')
+                    ->default(PostStatus::Draft)
                     ->reactive(),
             ]);
     }
@@ -66,8 +66,8 @@ class PostResource extends Resource
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
-                        'secondary' => 'draft',
-                        'success' => 'published',
+                        'secondary' => PostStatus::Draft->value,
+                        'success' => PostStatus::Published->value,
                     ])
                     ->searchable(),
             ])
