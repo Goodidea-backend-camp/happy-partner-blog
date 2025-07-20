@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Inertia\Inertia;
@@ -12,7 +13,7 @@ class PostController extends Controller
     public function index(): Response
     {
         $posts = Post::with('user')
-            ->where('status', 'published')
+            ->where('status', PostStatus::Published->value)
             ->orderByDesc('id')
             ->paginate(10);
 
@@ -23,7 +24,7 @@ class PostController extends Controller
 
     public function show(Post $post): Response
     {
-        if ($post->status !== 'published') {
+        if ($post->status !== PostStatus::Published) {
             abort(404);
         }
 
