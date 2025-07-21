@@ -24,7 +24,7 @@ class UserPolicy
      */
     public function delete(User $user, User $targetUser): bool
     {
-        // 任何人都不能刪除使用者
+        // 目前使用者刪除若沒刪除關聯的文章，會導致前台出錯，所以先不讓任何人可以進行 “刪除使用者” 動作
         return false;
     }
 
@@ -42,7 +42,7 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $targetUser): bool
     {
-        // 任何人都不能永久刪除使用者
+        // 目前使用者刪除若沒刪除關聯的文章，會導致前台出錯，所以先不讓任何人可以進行 “永久刪除使用者” 動作
         return false;
     }
 

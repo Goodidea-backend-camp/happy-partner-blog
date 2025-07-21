@@ -41,6 +41,7 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
+        // 文章基於為了避免後面有法律問題時當證據留存，所以不讓任何人進行 "永久性刪除" 的動作
         return false;
     }
 
