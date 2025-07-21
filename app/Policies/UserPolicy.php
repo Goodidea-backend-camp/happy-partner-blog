@@ -21,15 +21,23 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以刪除特定使用者
+     *
+     * @param  User  $user  使用者實例
+     * @param  User  $targetUser  目前使用者實例
+     * @return bool 是否可以刪除使用者
      */
     public function delete(User $user, User $targetUser): bool
     {
-        // 目前使用者刪除若沒刪除關聯的文章，會導致前台出錯，所以先不讓任何人可以進行 “刪除使用者” 動作
+        // 目前刪除使用者若未同步刪除關聯文章，會導致前台出錯，故不允許任何人刪除使用者
         return false;
     }
 
     /**
      * 判斷使用者是否可以還原特定使用者
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以還原使用者
      */
     public function restore(User $user, User $targetUser): bool
     {
@@ -39,15 +47,23 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以永久刪除特定使用者
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以永久刪除使用者
      */
     public function forceDelete(User $user, User $targetUser): bool
     {
-        // 目前使用者刪除若沒刪除關聯的文章，會導致前台出錯，所以先不讓任何人可以進行 “永久刪除使用者” 動作
+        // 目前刪除使用者若未同步刪除關聯文章，會導致前台出錯，故不允許任何人永久刪除使用者
         return false;
     }
 
     /**
      * 判斷使用者是否可以編輯名稱欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以編輯名稱欄位
      */
     public function editName(User $user, User $targetUser): bool
     {
@@ -62,6 +78,10 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以編輯信箱欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以編輯信箱欄位
      */
     public function editEmail(User $user, User $targetUser): bool
     {
@@ -76,6 +96,10 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以編輯密碼欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以編輯密碼欄位
      */
     public function editPassword(User $user, User $targetUser): bool
     {
@@ -90,6 +114,10 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以編輯密碼確認欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以編輯密碼確認欄位
      */
     public function editPasswordConfirmation(User $user, User $targetUser): bool
     {
@@ -104,6 +132,10 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以編輯角色欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以編輯角色欄位
      */
     public function editRole(User $user, User $targetUser): bool
     {
@@ -113,6 +145,10 @@ class UserPolicy
 
     /**
      * 判斷使用者是否可以檢視角色欄位
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否可以檢視角色欄位
      */
     public function viewRole(User $user, User $targetUser): bool
     {
@@ -122,6 +158,10 @@ class UserPolicy
 
     /**
      * 判斷是否顯示編輯按鈕
+     *
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\User  $targetUser  目前使用者實例
+     * @return bool 是否顯示編輯按鈕
      */
     public function viewEditButton(User $user, User $targetUser): bool
     {
