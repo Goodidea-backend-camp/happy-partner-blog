@@ -49,7 +49,7 @@ class PostResource extends Resource
                         PostStatus::Published->value => 'Published',
                     ])
                     ->required()
-                    ->default(PostStatus::Draft)
+                    ->default(PostStatus::Draft->value)
                     ->reactive(),
             ]);
     }
