@@ -40,7 +40,7 @@ class UserPolicy
     /**
      * 判斷使用者是否可以永久刪除特定使用者
      */
-    public function forceDelete(User $user, User $targetUser): bool  
+    public function forceDelete(User $user, User $targetUser): bool
     {
         // 任何人都不能永久刪除使用者
         return false;
