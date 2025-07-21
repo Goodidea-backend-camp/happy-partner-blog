@@ -10,9 +10,9 @@ class PostPolicy
     /**
      * 判斷是否允許登入使用者更新特定文章
      *
-     * @param User $user
-     * @param Post $post
-     * @return bool
+     * @param  \app\Models\User  $user  使用者實例
+     * @param  \app\Models\Post  $post  文章實例
+     * @return bool 使用者是否可以更新文章資訊
      */
     public function update(User $user, Post $post): bool
     {
@@ -22,10 +22,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者刪除特定文章
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function delete(User $user, Post $post): bool
     {
@@ -34,10 +30,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者還原特定文章
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function restore(User $user, Post $post): bool
     {
@@ -46,10 +38,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者永久刪除特定文章
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function forceDelete(User $user, Post $post): bool
     {
@@ -58,10 +46,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者編輯文章標題
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function editTitle(User $user, Post $post): bool
     {
@@ -70,10 +54,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者編輯文章 slug
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function editSlug(User $user, Post $post): bool
     {
@@ -82,10 +62,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者編輯文章內容
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function editContent(User $user, Post $post): bool
     {
@@ -94,10 +70,6 @@ class PostPolicy
 
     /**
      * 判斷是否允許登入使用者編輯文章狀態
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function editStatus(User $user, Post $post): bool
     {
@@ -107,10 +79,6 @@ class PostPolicy
 
     /**
      * 判斷是否顯示刪除按鈕
-     *
-     * @param User $user
-     * @param Post $post
-     * @return bool
      */
     public function viewDeleteButton(User $user, Post $post): bool
     {
