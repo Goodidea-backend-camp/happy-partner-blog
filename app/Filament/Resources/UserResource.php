@@ -4,15 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
@@ -57,7 +56,7 @@ class UserResource extends Resource
                     ->required()
                     ->default('author')
                     ->visible($isAdmin)
-                    ->disabled(!$isAdmin),
+                    ->disabled(! $isAdmin),
             ]);
     }
 
@@ -86,8 +85,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record): bool =>
-                        Auth::user()->role === 'admin' || Auth::id() === $record->id
+                    ->visible(fn (User $record): bool => Auth::user()->role === 'admin' || Auth::id() === $record->id
                     ),
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn (): bool => Auth::user()->role === 'admin'),
