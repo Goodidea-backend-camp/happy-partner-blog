@@ -41,8 +41,8 @@ class UserPolicy
      */
     public function restore(User $user, User $targetUser): bool
     {
-        // 僅管理員可執行用戶還原操作
-        return $user->role === 'admin';
+        // 使用者還原功能尚未開發。為確保資料安全與避免非預期的還原操作，目前不對任何使用者開放此功能。
+        return false;
     }
 
     /**
