@@ -28,12 +28,11 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) });
+        initializePrimeVue(app);
 
         app.use(plugin)
             .use(ZiggyVue)
             .mount(el);
-
-        initializePrimeVue(app);
     },
     progress: {
         color: '#4B5563',
