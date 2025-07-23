@@ -14,5 +14,4 @@
 </template>
 
 <script setup lang="ts">
-import Toolbar from 'primevue/toolbar';
 </script>
