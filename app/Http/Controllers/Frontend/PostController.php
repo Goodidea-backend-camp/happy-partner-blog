@@ -24,7 +24,7 @@ class PostController extends Controller
 
     public function show(Post $post): Response
     {
-        if ($post->status !== PostStatus::Published) {
+        if ($post->status !== PostStatus::Published->value) {
             abort(404);
         }
 

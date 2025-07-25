@@ -18,7 +18,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
             'content' => $this->faker->paragraph(),
-            'status' => PostStatus::Published,
+            'status' => PostStatus::Published->value,
         ];
     }
 }
