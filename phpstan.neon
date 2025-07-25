@@ -6,3 +6,6 @@ parameters:
     paths:
         - app/
         - routes/
+        - tests/
+        - database/
+        - config/
