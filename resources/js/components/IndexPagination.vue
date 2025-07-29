@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps<{
+const { posts } = defineProps<{
     posts: {
         data: Array<{
             id: number;
