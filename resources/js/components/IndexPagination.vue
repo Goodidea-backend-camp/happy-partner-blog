@@ -1,5 +1,5 @@
 <template>
-    <div v-if="posts.data.length > 0 && posts.links.length > 3" class="mt-12">
+    <div v-if="posts.links.length > 3" class="mt-12">
         <nav class="flex items-center justify-between">
             <div class="flex-1 flex justify-between sm:hidden">
                 <Link v-if="posts.links[0].url" :href="posts.links[0].url || '#'"
@@ -39,17 +39,6 @@ import { Link } from '@inertiajs/vue3';
 
 const { posts } = defineProps<{
     posts: {
-        data: Array<{
-            id: number;
-            title: string;
-            slug: string;
-            content: string; // Full content, we'll need to truncate for preview
-            updated_at: string;
-            user: {
-                name: string;
-            };
-            // Add other fields from your Post model as needed
-        }>;
         links: Array<{
             url: string | null;
             label: string;
