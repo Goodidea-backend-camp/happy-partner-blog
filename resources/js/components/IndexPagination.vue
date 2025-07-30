@@ -4,14 +4,14 @@
             <div class="flex-1 flex justify-between sm:hidden">
                 <Link v-if="posts.links[0].url" :href="posts.links[0].url || '#'"
                     class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    preserve-scroll>
-                <div v-html="posts.links[0].label"></div>
+                    preserve-scroll
+                    v-html="posts.links[0].label">
                 </Link>
                 <Link v-if="posts.links[posts.links.length - 1].url"
                     :href="posts.links[posts.links.length - 1].url || '#'"
                     class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    preserve-scroll>
-                <div v-html="posts.links[posts.links.length - 1].label"></div>
+                    preserve-scroll
+                    v-html="posts.links[posts.links.length - 1].label">
                 </Link>
             </div>
             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
@@ -23,8 +23,7 @@
                                     'z-10 bg-indigo-50 border-indigo-500 text-indigo-600 dark:bg-indigo-900 dark:border-indigo-700 dark:text-indigo-300': link.active,
                                     'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700': !link.active && link.url,
                                     'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500': !link.url
-                                }" :disabled="!link.url" preserve-scroll>
-                            <div v-html="link.label"></div>
+                                }" :disabled="!link.url" preserve-scroll v-html="link.label">
                             </Link>
                         </template>
                     </span>
@@ -44,7 +43,6 @@ const { posts } = defineProps<{
             label: string;
             active: boolean;
         }>;
-        // other pagination properties like current_page, last_page, etc., if needed directly
     };
 }>();
 </script>
