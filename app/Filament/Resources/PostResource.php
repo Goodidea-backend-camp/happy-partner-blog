@@ -30,7 +30,7 @@ class PostResource extends Resource
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Set $set, ?string $state) {
-                        if ($state) {
+                        if ($state !== null && $state !== '') {
                             $slug = Str::slug($state);
                             $set('slug', $slug);
                         }
@@ -99,11 +99,11 @@ class PostResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        $builder = parent::getEloquentQuery();
         if (auth()->check() && auth()->user()->role !== 'admin') {
-            $query->where('user_id', auth()->id());
+            $builder->where('user_id', auth()->id());
         }
 
-        return $query;
+        return $builder;
     }
 }

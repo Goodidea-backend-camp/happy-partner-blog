@@ -11,13 +11,13 @@ class PostController extends Controller
 {
     public function index(): Response
     {
-        $posts = Post::with('user')
+        $lengthAwarePaginator = Post::with('user')
             ->where('status', 'published')
             ->orderByDesc('id')
             ->paginate(10);
 
         return Inertia::render('Posts/Index', [
-            'posts' => $posts,
+            'posts' => $lengthAwarePaginator,
         ]);
     }
 
