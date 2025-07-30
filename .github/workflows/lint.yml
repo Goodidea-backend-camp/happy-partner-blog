@@ -32,6 +32,9 @@
        - name: Run Pint
          run: vendor/bin/pint --test
 
+       - name: Run Rector
+         run: vendor/bin/rector process --dry-run
+
        - name: Format Frontend
          run: npm run format
 

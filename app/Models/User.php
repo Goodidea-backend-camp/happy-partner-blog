@@ -13,7 +13,10 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory;
+
+    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

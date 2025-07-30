@@ -85,7 +85,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record): bool => Auth::user()->role === 'admin' || Auth::id() === $record->id
+                    ->visible(fn (User $user): bool => Auth::user()->role === 'admin' || Auth::id() === $user->id
                     ),
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn (): bool => Auth::user()->role === 'admin'),
@@ -114,13 +114,13 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        $builder = parent::getEloquentQuery();
 
         if (auth()->check() && auth()->user()->role !== 'admin') {
-            $query->where('id', auth()->id());
+            $builder->where('id', auth()->id());
         }
 
-        return $query;
+        return $builder;
     }
 
     public static function canCreate(): bool
