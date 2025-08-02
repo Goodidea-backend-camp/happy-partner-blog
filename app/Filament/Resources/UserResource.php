@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms\Components\Select;
@@ -22,7 +23,7 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isAdmin = Auth::user()->role === 'admin';
+        $isAdmin = Auth::user()->role === UserRole::Admin->value;
 
         return $form
             ->schema([
@@ -50,11 +51,11 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Select::make('role')
                     ->options([
-                        'author' => 'Author',
-                        'admin' => 'Admin',
+                        UserRole::Author->value => 'Author',
+                        UserRole::Admin->value => 'Admin',
                     ])
                     ->required()
-                    ->default('author')
+                    ->default(UserRole::Author->value)
                     ->visible($isAdmin)
                     ->disabled(! $isAdmin),
             ]);
@@ -71,8 +72,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role')
                     ->badge()
                     ->colors([
-                        'success' => 'author',
-                        'danger' => 'admin',
+                        'success' => UserRole::Author->value,
+                        'danger' => UserRole::Admin->value,
                     ])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -85,15 +86,15 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record): bool => Auth::user()->role === 'admin' || Auth::id() === $record->id
+                    ->visible(fn (User $record): bool => Auth::user()->role === UserRole::Admin->value || Auth::id() === $record->id
                     ),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (): bool => Auth::user()->role === 'admin'),
+                    ->visible(fn (): bool => Auth::user()->role === UserRole::Admin->value),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn (): bool => Auth::user()->role === 'admin'),
+                        ->visible(fn (): bool => Auth::user()->role === UserRole::Admin->value),
                 ]),
             ]);
     }
@@ -116,7 +117,7 @@ class UserResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (auth()->check() && auth()->user()->role !== 'admin') {
+        if (auth()->check() && auth()->user()->role !== UserRole::Admin->value) {
             $query->where('id', auth()->id());
         }
 
@@ -125,6 +126,6 @@ class UserResource extends Resource
 
     public static function canCreate(): bool
     {
-        return auth()->user()->role === 'admin';
+        return auth()->user()->role === UserRole::Admin->value;
     }
 }
