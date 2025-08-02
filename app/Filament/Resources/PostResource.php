@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
 use Filament\Forms\Components\MarkdownEditor;
@@ -100,7 +101,7 @@ class PostResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        if (auth()->check() && auth()->user()->role !== 'admin') {
+        if (auth()->check() && auth()->user()->role !== UserRole::Admin->value) {
             $query->where('user_id', auth()->id());
         }
 
