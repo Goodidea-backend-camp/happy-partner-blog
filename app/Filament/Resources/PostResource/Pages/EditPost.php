@@ -16,7 +16,7 @@ class EditPost extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->visible(fn (?Post $record): bool => $record && Auth::user()->can('viewDeleteButton', $record)),
+                ->visible(fn (Post $record): bool => $record && Auth::user()->can('delete', $record)),
         ];
     }
 }
