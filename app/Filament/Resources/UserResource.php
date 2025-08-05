@@ -27,13 +27,13 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->disabled(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->cannot('editName', $currentEditUser)),
+                    ->disabled(fn (User $currentEditUser): bool => Auth::user()->cannot('editName', $currentEditUser)),
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
-                    ->disabled(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->cannot('editEmail', $currentEditUser)),
+                    ->disabled(fn (User $currentEditUser): bool => Auth::user()->cannot('editEmail', $currentEditUser)),
                 TextInput::make('password')
                     ->password()
                     ->revealable()
@@ -41,7 +41,7 @@ class UserResource extends Resource
                     ->dehydrated(fn ($state) => filled($state))
                     ->rules(['confirmed'])
                     ->maxLength(255)
-                    ->disabled(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->cannot('editPassword', $currentEditUser)),
+                    ->disabled(fn (User $currentEditUser): bool => Auth::user()->cannot('editPassword', $currentEditUser)),
                 TextInput::make('password_confirmation')
                     ->password()
                     ->revealable()
@@ -49,7 +49,7 @@ class UserResource extends Resource
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(false)
                     ->maxLength(255)
-                    ->disabled(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->cannot('editPasswordConfirmation', $currentEditUser)),
+                    ->disabled(fn (User $currentEditUser): bool => Auth::user()->cannot('editPasswordConfirmation', $currentEditUser)),
                 Select::make('role')
                     ->options([
                         'author' => 'Author',
@@ -57,8 +57,8 @@ class UserResource extends Resource
                     ])
                     ->required()
                     ->default('author')
-                    ->visible(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->can('viewRole', $currentEditUser))
-                    ->disabled(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->cannot('editRole', $currentEditUser)),
+                    ->visible(fn (User $currentEditUser): bool => Auth::user()->can('viewRole', $currentEditUser))
+                    ->disabled(fn (User $currentEditUser): bool => Auth::user()->cannot('editRole', $currentEditUser)),
             ]);
     }
 
@@ -87,7 +87,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (?User $currentEditUser): bool => $currentEditUser && Auth::user()->can('update', $currentEditUser)),
+                    ->visible(fn (User $currentEditUser): bool => Auth::user()->can('update', $currentEditUser)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),

@@ -4,8 +4,20 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class UserPolicy extends AuthorizablePolicy
+class UserPolicy
 {
+    /**
+     * 判斷使用者是否為資源的擁有者
+     *
+     * @param  User  $user  當前操作的使用者
+     * @param  User  $targetUser  被操作的使用者
+     * @return bool 是否為擁有者
+     */
+    private function isOwner(User $user, User $targetUser): bool
+    {
+        return $user->id === $targetUser->id;
+    }
+
     /**
      * 判斷使用者是否可以更新特定使用者資料
      *
@@ -16,7 +28,7 @@ class UserPolicy extends AuthorizablePolicy
     public function update(User $user, User $targetUser): bool
     {
         // 管理員可更新任何使用者，或使用者可更新自己的資料
-        return $this->isAdmin($user) || $this->isOwner($user, $targetUser);
+        return $user->isAdmin() || $this->isOwner($user, $targetUser);
     }
 
     /**
@@ -67,13 +79,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function editName(User $user, User $targetUser): bool
     {
-        // 創建新使用者時：僅管理員有權限設定使用者姓名
-        if ($this->isCreateingUser($targetUser)) {
-            return $this->isAdmin($user);
+        // 編輯現有使用者時：僅允許使用者修改自己的姓名
+        if ($targetUser->exists) {
+            return $this->isOwner($user, $targetUser);
         }
 
-        // 編輯現有使用者時：僅允許使用者修改自己的姓名
-        return $this->isOwner($user, $targetUser);
+        // 創建新使用者時：僅管理員有權限設定使用者姓名
+        return $user->isAdmin();
     }
 
     /**
@@ -85,13 +97,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function editEmail(User $user, User $targetUser): bool
     {
-        // 創建新使用者時：僅管理員有權限設定使用者信箱
-        if ($this->isCreateingUser($targetUser)) {
-            return $this->isAdmin($user);
+        // 編輯現有使用者時：僅允許使用者修改自己的信箱
+        if ($targetUser->exists) {
+            return $this->isOwner($user, $targetUser);
         }
 
-        // 編輯現有使用者時：僅允許使用者修改自己的信箱
-        return $this->isOwner($user, $targetUser);
+        // 創建新使用者時：僅管理員有權限設定使用者信箱
+        return $user->isAdmin();
     }
 
     /**
@@ -103,13 +115,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function editPassword(User $user, User $targetUser): bool
     {
-        // 創建新使用者時：僅管理員有權限設定使用者密碼
-        if ($this->isCreateingUser($targetUser)) {
-            return $this->isAdmin($user);
+        // 編輯現有使用者時：僅允許使用者修改自己的密碼
+        if ($targetUser->exists) {
+            return $this->isOwner($user, $targetUser);
         }
 
-        // 編輯現有使用者時：僅允許使用者修改自己的密碼
-        return $this->isOwner($user, $targetUser);
+        // 創建新使用者時：僅管理員有權限設定使用者密碼
+        return $user->isAdmin();
     }
 
     /**
@@ -121,13 +133,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function editPasswordConfirmation(User $user, User $targetUser): bool
     {
-        // 創建新使用者時：僅管理員有權限設定密碼確認
-        if ($this->isCreateingUser($targetUser)) {
-            return $this->isAdmin($user);
+        // 編輯現有使用者時：僅允許使用者修改自己的密碼確認
+        if ($targetUser->exists) {
+            return $this->isOwner($user, $targetUser);
         }
 
-        // 編輯現有使用者時：僅允許使用者修改自己的密碼確認
-        return $this->isOwner($user, $targetUser);
+        // 創建新使用者時：僅管理員有權限設定密碼確認
+        return $user->isAdmin();
     }
 
     /**
@@ -140,7 +152,7 @@ class UserPolicy extends AuthorizablePolicy
     public function editRole(User $user, User $targetUser): bool
     {
         // 僅管理員可編輯使用者角色權限
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 
     /**
@@ -153,6 +165,6 @@ class UserPolicy extends AuthorizablePolicy
     public function viewRole(User $user, User $targetUser): bool
     {
         // 僅管理員可檢視使用者角色資訊
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 }

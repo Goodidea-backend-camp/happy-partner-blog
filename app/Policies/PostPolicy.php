@@ -5,8 +5,20 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 
-class PostPolicy extends AuthorizablePolicy
+class PostPolicy
 {
+    /**
+     * 判斷使用者是否為資源的擁有者
+     *
+     * @param  User  $user  當前操作的使用者
+     * @param  Post  $post  被操作的文章
+     * @return bool 是否為擁有者
+     */
+    private function isOwner(User $user, Post $post): bool
+    {
+        return $user->id === $post->user_id;
+    }
+
     /**
      * 判斷是否允許登入使用者更新特定文章
      *
@@ -17,7 +29,7 @@ class PostPolicy extends AuthorizablePolicy
     public function update(User $user, Post $post): bool
     {
         // 管理員可更新任何文章，或文章作者可更新自己的文章
-        return $this->isAdmin($user) || $this->isOwner($user, $post);
+        return $user->isAdmin() || $this->isOwner($user, $post);
     }
 
     /**
@@ -68,8 +80,13 @@ class PostPolicy extends AuthorizablePolicy
      */
     public function editTitle(User $user, Post $post): bool
     {
-        // 僅文章作者可編輯自己的文章標題
-        return $this->isOwner($user, $post);
+        // 編輯文章時，僅作者可編輯自己的文章標題
+        if ($post->exists) {
+            return $this->isOwner($user, $post);
+        }
+
+        // 新增文章時，已登入者可以編輯文章標題
+        return true;
     }
 
     /**
@@ -81,8 +98,13 @@ class PostPolicy extends AuthorizablePolicy
      */
     public function editSlug(User $user, Post $post): bool
     {
-        // 僅文章作者可編輯自己的文章 slug
-        return $this->isOwner($user, $post);
+        // 編輯文章時，僅作者可編輯自己的文章 slug
+        if ($post->exists) {
+            return $this->isOwner($user, $post);
+        }
+
+        // 新增文章時，已登入者可以編輯文章的 slug
+        return true;
     }
 
     /**
@@ -94,8 +116,13 @@ class PostPolicy extends AuthorizablePolicy
      */
     public function editContent(User $user, Post $post): bool
     {
-        // 僅文章作者可編輯自己的文章內容
-        return $this->isOwner($user, $post);
+        // 編輯文章，僅作者可編輯自己的文章內容
+        if ($post->exists) {
+            return $this->isOwner($user, $post);
+        }
+
+        // 新增文章時，已登入者可以編輯文章內容
+        return true;
     }
 
     /**
@@ -108,6 +135,6 @@ class PostPolicy extends AuthorizablePolicy
     public function editStatus(User $user, Post $post): bool
     {
         // 管理員可編輯任何文章狀態，或文章作者可編輯自己的文章狀態
-        return $this->isAdmin($user) || $this->isOwner($user, $post);
+        return $user->isAdmin() || $this->isOwner($user, $post);
     }
 }

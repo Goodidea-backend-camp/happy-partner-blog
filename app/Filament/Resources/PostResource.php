@@ -36,16 +36,16 @@ class PostResource extends Resource
                             $set('slug', $slug);
                         }
                     })
-                    ->disabled(fn (?Post $currentEditPost): bool => $currentEditPost && Auth::user()->cannot('editTitle', $currentEditPost)),
+                    ->disabled(fn (Post $currentEditPost): bool => Auth::user()->cannot('editTitle', $currentEditPost)),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                    ->disabled(fn (?Post $currentEditPost): bool => $currentEditPost && Auth::user()->cannot('editSlug', $currentEditPost)),
+                    ->disabled(fn (Post $currentEditPost): bool => Auth::user()->cannot('editSlug', $currentEditPost)),
                 MarkdownEditor::make('content')
                     ->required()
                     ->columnSpanFull()
-                    ->disabled(fn (?Post $currentEditPost): bool => $currentEditPost && Auth::user()->cannot('editContent', $currentEditPost)),
+                    ->disabled(fn (Post $currentEditPost): bool => Auth::user()->cannot('editContent', $currentEditPost)),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -74,12 +74,11 @@ class PostResource extends Resource
                     ])
                     ->searchable(),
             ])
-            ->filters([
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (?Post $currentEditPost): bool => $currentEditPost && Auth::user()->can('delete', $currentEditPost)),
+                    ->visible(fn (Post $currentEditPost): bool => Auth::user()->can('delete', $currentEditPost)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
