@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PostStatus;
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
 use Filament\Forms\Components\MarkdownEditor;
@@ -48,11 +49,11 @@ class PostResource extends Resource
                     ->disabled(fn (Post $currentEditPost): bool => Auth::user()->cannot('editContent', $currentEditPost)),
                 Select::make('status')
                     ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
+                        PostStatus::Draft->value => 'Draft',
+                        PostStatus::Published->value => 'Published',
                     ])
                     ->required()
-                    ->default('draft')
+                    ->default(PostStatus::Draft->value)
                     ->reactive(),
             ]);
     }
@@ -69,8 +70,8 @@ class PostResource extends Resource
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
-                        'secondary' => 'draft',
-                        'success' => 'published',
+                        'secondary' => PostStatus::Draft->value,
+                        'success' => PostStatus::Published->value,
                     ])
                     ->searchable(),
             ])

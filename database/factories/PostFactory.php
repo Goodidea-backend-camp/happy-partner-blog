@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,7 +18,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
             'content' => $this->faker->paragraph(),
-            'status' => 'published',
+            'status' => PostStatus::Published->value,
         ];
     }
 }
