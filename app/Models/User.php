@@ -66,4 +66,12 @@ class User extends Authenticatable implements FilamentUser
         // 目前沒有需要驗證 Email，所以直接 return true
         return true;
     }
+
+    /**
+     * 判斷使用者是否為管理員。
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }
